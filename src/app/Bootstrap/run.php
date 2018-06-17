@@ -12,8 +12,6 @@ try {
 
     $app = new \Slim\App($config);
 
-    $app->add(\Middleware\UserTypeResponseMiddleware::class);
-
     $app->add(function ($req, $res, $next) {
         /** @var \Slim\Http\Response $res */
         /** @var \Slim\Http\Response $response */

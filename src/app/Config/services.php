@@ -52,3 +52,9 @@ $container['db'] = function ($container) {
 
     return $capsule;
 };
+
+$container['ProductController'] = function ($container) {
+    $request = $container->get('request');
+
+    return new \Controller\ProductController($container, $request);
+};
