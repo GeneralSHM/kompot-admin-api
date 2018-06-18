@@ -57,16 +57,16 @@ class Product extends BaseModel
         }
         $query
             ->select(array(
-                $this->table . '.id as productId',
-                $this->table . '.name as productName',
-                $this->table . '.amazon_name as productSku',
-                $this->table . '.amazon_price as ourPrice',
+                $this->table . '.id as id',
+                $this->table . '.name as name',
+                $this->table . '.amazon_name as sku',
+                $this->table . '.amazon_price as our_price',
                 $this->table . '.availability',
                 $this->table . '.thumbnail',
                 $this->table . '.url as productUrl',
-                $this->table . '.last_change as productLastChange',
-                $this->table . '.send_to_amazon as sendToAmazon',
-                $this->table . '.price as productPrice',
+                $this->table . '.last_change',
+                $this->table . '.send_to_amazon',
+                $this->table . '.price as price',
                 $this->table . '.upc as productUPC',
                 $this->table . '.ean as productEAN',
                 $this->table . '.mpn as productMPN',
@@ -114,8 +114,8 @@ class Product extends BaseModel
         }
 
         $query->select(array(
-            $this->table . '.store',
-            $this->table . '.url'
+            $this->table . '.store as label',
+            $this->table . '.url as value'
         ));
 
         return $query->get();

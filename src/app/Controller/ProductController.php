@@ -23,10 +23,25 @@ class ProductController extends BaseController {
             $upc = $item['productUPC'];
             $ean = $item['productEAN'];
             $mpn = $item['productMPN'];
-            $productId = $item['productId'];
+            $productId = $item['id'];
 
             $stores = $model->getItemStores($ean, $mpn, $upc, $productId);
+            if (count($stores) >= 1) {
+                $tmp = $stores[0];
+                $stores[0] = [
+                    'value' => $item['productUrl'],
+                    'label' => $item['storeName']
+                ];
+                $stores[] = $tmp;
+            } else {
+                $stores[0] = [
+                    'value' => $item['productUrl'],
+                    'label' => $item['storeName']
+                ];
+            }
             $items[$key]['stores'] = $stores;
+            $items[$key]['product_id'] = 'UPC' . $upc . ', EAN' . $ean . ', MPN' . $mpn;
+            $items[$key]['send_to_amazon'] = $item['send_to_amazon'] === 1;
         }
 
         return $items;
