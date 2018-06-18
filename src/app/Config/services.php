@@ -58,3 +58,9 @@ $container['ProductController'] = function ($container) {
 
     return new \Controller\ProductController($container, $request);
 };
+
+$container['BrandController'] = function ($container) {
+    $request = $container->get('request');
+
+    return new \Controller\BrandController($container, $request);
+};

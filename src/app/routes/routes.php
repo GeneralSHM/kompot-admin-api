@@ -25,6 +25,14 @@ $app->get('/products', function(\Slim\Http\Request $request, \Slim\Http\Response
 
     $responseData = $productController->getProducts($limit, $offset, $brands, $stores, $searchCriteria, $priceFromTo);
 
-    echo json_encode($responseData);
-    die;
+    return $response->withJson($responseData);
 })->add(\Middleware\ListMiddleware::class);
+
+$app->get('/brands', function(\Slim\Http\Request $request, \Slim\Http\Response $response, $args){
+    /** @var  $brandController \Controller\BrandController */
+    $brandController = $this->get('BrandController');
+
+    $responseData = $brandController->getAllBrands();
+
+    return $response->withJson($responseData);
+});
