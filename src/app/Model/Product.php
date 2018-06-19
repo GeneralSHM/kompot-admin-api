@@ -2,6 +2,8 @@
 
 namespace Model;
 
+use Illuminate\Database\Capsule\Manager;
+
 class Product extends BaseModel
 {
     const ACTIVE_URL = 1;
@@ -77,6 +79,16 @@ class Product extends BaseModel
             ->orderBy('last_change', 'DESC')
             ->limit($limit)
             ->offset($offset);
+
+        return $query->get();
+    }
+
+    public function getTotalItemsCount()
+    {
+        $query = Product::query();
+        $query->select(array(
+            Manager::connection()->raw('COUNT(*) as totalCount')
+        ));
 
         return $query->get();
     }

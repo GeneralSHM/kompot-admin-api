@@ -44,6 +44,12 @@ class ProductController extends BaseController {
             $items[$key]['send_to_amazon'] = $item['send_to_amazon'] === 1;
         }
 
-        return $items;
+        $totalProducts = $model->getTotalItemsCount()->toArray();
+        return [
+            'items' => $items,
+            'pagination' => [
+                'totalCount' => $totalProducts[0]['totalCount']
+            ]
+        ];
     }
 }
