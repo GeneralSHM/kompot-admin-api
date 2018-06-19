@@ -18,6 +18,10 @@ class Brand extends BaseModel
     {
         $query = Brand::query();
 
+        $query->select(array(
+            $this->table . '.id as value',
+            $this->table . '.name as label',
+        ));
         return $query->get();
     }
 }
