@@ -36,3 +36,13 @@ $app->get('/brands', function(\Slim\Http\Request $request, \Slim\Http\Response $
 
     return $response->withJson($responseData);
 });
+
+$app->put('/product/{id}', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args){
+    /** @var  $productController \Controller\ProductController */
+    $productController = $this->get('ProductController');
+
+    $product = $request->getParam('product');
+    $productController->updateProduct($product);
+
+    return true;
+});

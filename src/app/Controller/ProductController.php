@@ -52,4 +52,11 @@ class ProductController extends BaseController {
             ]
         ];
     }
+
+    public function updateProduct($product)
+    {
+        $model = new Product();
+
+        $model->updateProduct($product);
+    }
 }

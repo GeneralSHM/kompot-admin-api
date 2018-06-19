@@ -9,6 +9,8 @@ class Product extends BaseModel
     const ACTIVE_URL = 1;
     const INACTIVE_URL = 0;
 
+    const UPDATED_AT = 'last_change';
+
     /**
      * Table name for the model.
      *
@@ -25,7 +27,7 @@ class Product extends BaseModel
         array $priceFromTo = []
     )
     {
-        $query = Product::query();
+        $query = self::query();
         $query = $query->leftJoin('brand', function($join)
         {
             $join->on($this->table . '.brand_id', '=', 'brand.id');
@@ -98,7 +100,7 @@ class Product extends BaseModel
         if (!$ean && !$mpn && !$upc) {
             return [];
         }
-        $query = Product::query();
+        $query = self::query();
 
         $query = $query->where($this->table . '.id', '!=', $productId);
         if ($ean) {
@@ -131,5 +133,16 @@ class Product extends BaseModel
         ));
 
         return $query->get();
+    }
+
+    public function updateProduct($product)
+    {
+        $query = self::query();
+        $query->where('id', $product['id'])
+            ->update(array(
+                'amazon_price' => $product['our_price'],
+                'brand_id' => $product['brandId'],
+                'amazon_name' => $product['sku']
+            ));
     }
 }
