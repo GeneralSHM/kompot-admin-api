@@ -142,7 +142,8 @@ class Product extends BaseModel
             ->update(array(
                 'amazon_price' => $product['our_price'],
                 'brand_id' => $product['brandId'],
-                'amazon_name' => $product['sku']
+                'amazon_name' => $product['sku'],
+                'send_to_amazon' => $product['send_to_amazon']
             ));
     }
 }
