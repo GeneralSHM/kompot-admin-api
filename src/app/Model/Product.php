@@ -103,27 +103,46 @@ class Product extends BaseModel
         $query = self::query();
 
         $query = $query->where($this->table . '.id', '!=', $productId);
-        if ($ean) {
-            $query = $query->where(function ($query) use ($ean) {
-                $query->where($this->table . '.upc', '=', $ean)
-                    ->orWhere($this->table . '.ean', '=', $ean)
-                    ->orWhere($this->table . '.mpn', '=', $ean);
-            });
-        }
+        if ($ean || $mpn || $upc) {
+            $query = $query->where(function($query) use ($ean, $mpn, $upc) {
+                $didAddWhere = false;
+                if ($ean) {
+                    $didAddWhere = true;
+                    $query = $query->where(function ($query) use ($ean) {
+                        $query->where($this->table . '.upc', '=', $ean)
+                            ->orWhere($this->table . '.ean', '=', $ean)
+                            ->orWhere($this->table . '.mpn', '=', $ean);
+                    });
+                }
 
-        if ($mpn) {
-            $query = $query->where(function ($query) use ($mpn) {
-                $query->where($this->table . '.upc', '=', $mpn)
-                    ->orWhere($this->table . '.ean', '=', $mpn)
-                    ->orWhere($this->table . '.mpn', '=', $mpn);
-            });
-        }
+                if ($mpn && $didAddWhere) {
+                    $query = $query->orWhere(function ($query) use ($mpn) {
+                        $query->where($this->table . '.upc', '=', $mpn)
+                            ->orWhere($this->table . '.ean', '=', $mpn)
+                            ->orWhere($this->table . '.mpn', '=', $mpn);
+                    });
+                } else if ($mpn) {
+                    $didAddWhere = true;
+                    $query = $query->where(function ($query) use ($mpn) {
+                        $query->where($this->table . '.upc', '=', $mpn)
+                            ->orWhere($this->table . '.ean', '=', $mpn)
+                            ->orWhere($this->table . '.mpn', '=', $mpn);
+                    });
+                }
 
-        if ($upc) {
-            $query = $query->where(function ($query) use ($upc) {
-                $query->where($this->table . '.upc', '=', $upc)
-                    ->orWhere($this->table . '.ean', '=', $upc)
-                    ->orWhere($this->table . '.mpn', '=', $upc);
+                if ($upc && $didAddWhere) {
+                    $query = $query->orWhere(function ($query) use ($upc) {
+                        $query->where($this->table . '.upc', '=', $upc)
+                            ->orWhere($this->table . '.ean', '=', $upc)
+                            ->orWhere($this->table . '.mpn', '=', $upc);
+                    });
+                } else if ($upc) {
+                    $query = $query->where(function ($query) use ($upc) {
+                        $query->where($this->table . '.upc', '=', $upc)
+                            ->orWhere($this->table . '.ean', '=', $upc)
+                            ->orWhere($this->table . '.mpn', '=', $upc);
+                    });
+                }
             });
         }
 
