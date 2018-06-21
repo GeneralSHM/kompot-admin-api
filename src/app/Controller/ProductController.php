@@ -59,4 +59,29 @@ class ProductController extends BaseController {
 
         $model->updateProduct($product);
     }
+
+    public function deleteProduct($id)
+    {
+        $query = Product::query();
+        $query->where('id' , '=' , $id)
+              ->update(array(
+                  'active' => 0
+              ));
+    }
+
+    public function getAllStores()
+    {
+        $model = new Product();
+        $stores = $model->getAllStores()->toArray();
+        $finalArray = [];
+
+        foreach ($stores as $key => $store) {
+            $finalArray[] = [
+                'label' => $store['storeName'],
+                'value' => $store['storeName']
+            ];
+        }
+
+        return $finalArray;
+    }
 }

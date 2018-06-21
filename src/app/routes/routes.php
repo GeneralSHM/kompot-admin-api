@@ -46,3 +46,22 @@ $app->put('/product/{id}', function (\Slim\Http\Request $request, \Slim\Http\Res
 
     return true;
 });
+
+$app->delete('/product/{id}', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args){
+    /** @var  $productController \Controller\ProductController */
+    $productController = $this->get('ProductController');
+
+    $productId = $args['id'];
+    $productController->deleteProduct($productId);
+
+    return true;
+});
+
+$app->get('/stores', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args){
+    /** @var  $productController \Controller\ProductController */
+    $productController = $this->get('ProductController');
+
+    $responseData = $productController->getAllStores();
+
+    return $response->withJson($responseData);
+});

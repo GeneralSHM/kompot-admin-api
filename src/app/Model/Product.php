@@ -11,6 +11,9 @@ class Product extends BaseModel
 
     const UPDATED_AT = 'last_change';
 
+    const ACTIVE_PRODUCT = 1;
+    const INACTIVE_PRODUCT = 1;
+
     /**
      * Table name for the model.
      *
@@ -28,6 +31,7 @@ class Product extends BaseModel
     )
     {
         $query = self::query();
+        $query = $query->where($this->table . '.active', '=', 1);
         $query = $query->leftJoin('brand', function($join)
         {
             $join->on($this->table . '.brand_id', '=', 'brand.id');
@@ -85,9 +89,21 @@ class Product extends BaseModel
         return $query->get();
     }
 
+    public function getAllStores()
+    {
+        $query = self::query();
+        $query = $query->where('active', '=', $this::ACTIVE_PRODUCT);
+        $query->select(array(
+            Manager::connection()->raw('DISTINCT(store) as storeName')
+        ));
+
+        return $query->get();
+    }
+
     public function getTotalItemsCount()
     {
         $query = Product::query();
+        $query = $query->where('active', '=', 1);
         $query->select(array(
             Manager::connection()->raw('COUNT(*) as totalCount')
         ));
@@ -103,6 +119,7 @@ class Product extends BaseModel
         $query = self::query();
 
         $query = $query->where($this->table . '.id', '!=', $productId);
+        $query = $query->where($this->table . '.active', '=', 1);
         if ($ean || $mpn || $upc) {
             $query = $query->where(function($query) use ($ean, $mpn, $upc) {
                 $didAddWhere = false;
