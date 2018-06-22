@@ -9,8 +9,10 @@ $app->get('/products', function(\Slim\Http\Request $request, \Slim\Http\Response
 
     $limit = $request->getParam('limit', 20);
     $offset = $request->getParam('offset', 0);
-    $brands = $request->getParam('brands', []);
-    $stores = $request->getParam('stores', []);
+    $brands = $request->getParam('brands', '');
+    $brands = $brands !== '' ? explode(',', $brands) : [];
+    $stores = $request->getParam('stores', '');
+    $stores = $stores !== '' ? explode(',', $stores) : [];
     $searchCriteria = $request->getParam('search', '');
     $priceFrom = $request->getParam('priceFrom');
     $priceTo = $request->getParam('priceTo');
