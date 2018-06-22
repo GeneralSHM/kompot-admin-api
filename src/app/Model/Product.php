@@ -48,9 +48,9 @@ class Product extends BaseModel
         if( ! is_null($searchCriteria) && strlen($searchCriteria) >= 1) {
             $query = $query->where(function ($query) use ($searchCriteria) {
                 $query->where($this->table . '.name', '=', $searchCriteria)
-                    ->orWhere($this->table . '.upc', '=', $searchCriteria)
-                    ->orWhere($this->table . '.ean', '=', $searchCriteria)
-                    ->orWhere($this->table . '.mpn', '=', $searchCriteria);
+                    ->orWhereRaw($this->table . '.upc LIKE "' . $searchCriteria . '"')
+                    ->orWhereRaw($this->table . '.ean LIKE "' . $searchCriteria . '"')
+                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"');
             });
         }
 
@@ -85,6 +85,55 @@ class Product extends BaseModel
             ->orderBy('last_change', 'DESC')
             ->limit($limit)
             ->offset($offset);
+
+        return $query->get();
+    }
+
+    public function getItemsBasedOnCount(
+        array $brands = [],
+        array $stores = [],
+        string $searchCriteria = null,
+        array $priceFromTo = []
+    )
+    {
+        $query = self::query();
+        $query = $query->where($this->table . '.active', '=', 1);
+        $query = $query->leftJoin('brand', function($join)
+        {
+            $join->on($this->table . '.brand_id', '=', 'brand.id');
+        });
+
+        if (count($brands) >= 1) {
+            $query = $query->where($this->table . '.brand_id', $brands);
+        }
+
+        if (count($stores) >= 1) {
+            $query = $query->whereIn($this->table . '.store', $stores);
+        }
+
+        if( ! is_null($searchCriteria) && strlen($searchCriteria) >= 1) {
+            $query = $query->where(function ($query) use ($searchCriteria) {
+                $query->where($this->table . '.name', '=', $searchCriteria)
+                    ->orWhereRaw($this->table . '.upc LIKE "' . $searchCriteria . '"')
+                    ->orWhereRaw($this->table . '.ean LIKE "' . $searchCriteria . '"')
+                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"');
+            });
+        }
+
+        if (count($priceFromTo) >= 1) {
+            if ($priceFromTo['from']) {
+                $query = $query->where($this->table . '.price', '>=', $priceFromTo['from']);
+            }
+
+            if ($priceFromTo['to']) {
+                $query = $query->where($this->table . '.price', '<=', $priceFromTo['to']);
+            }
+        }
+        $query
+            ->select(array(
+                Manager::connection()->raw('COUNT(*) as totalCount')
+            ))
+            ->orderBy('last_change', 'DESC');
 
         return $query->get();
     }

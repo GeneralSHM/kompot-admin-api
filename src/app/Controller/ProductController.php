@@ -18,6 +18,7 @@ class ProductController extends BaseController {
         /** @var $items \Illuminate\Support\Collection */
         $items = $model->getItemsBasedOn($limit, $offset, $brands, $stores, $searchCriteria, $priceFromTo);
         $items = $items->toArray();
+        $totalProducts = $model->getItemsBasedOnCount($brands, $stores, $searchCriteria, $priceFromTo)->toArray();
 
         foreach ($items as $key => $item) {
             $upc = $item['productUPC'];
@@ -44,7 +45,6 @@ class ProductController extends BaseController {
             $items[$key]['send_to_amazon'] = $item['send_to_amazon'] === 1;
         }
 
-        $totalProducts = $model->getTotalItemsCount()->toArray();
         return [
             'items' => $items,
             'pagination' => [
