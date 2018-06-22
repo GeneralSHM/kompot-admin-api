@@ -104,7 +104,7 @@ class Product extends BaseModel
         });
 
         if (count($brands) >= 1) {
-            $query = $query->where($this->table . '.brand_id', $brands);
+            $query = $query->whereIn($this->table . '.brand_id', $brands);
         }
 
         if (count($stores) >= 1) {
