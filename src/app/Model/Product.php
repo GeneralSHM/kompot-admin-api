@@ -55,12 +55,12 @@ class Product extends BaseModel
         }
 
         if (count($priceFromTo) >= 1) {
-            if ($priceFromTo['from']) {
-                $query = $query->where($this->table . '.price', '>=', $priceFromTo['from']);
+            if (isset($priceFromTo['from'])) {
+                $query = $query->whereRaw($this->table . '.price >= ' . $priceFromTo['from']);
             }
 
-            if ($priceFromTo['to']) {
-                $query = $query->where($this->table . '.price', '<=', $priceFromTo['to']);
+            if (isset($priceFromTo['to'])) {
+                $query = $query->whereRaw($this->table . '.price <= ' . $priceFromTo['to']);
             }
         }
         $query
@@ -121,12 +121,12 @@ class Product extends BaseModel
         }
 
         if (count($priceFromTo) >= 1) {
-            if ($priceFromTo['from']) {
-                $query = $query->where($this->table . '.price', '>=', $priceFromTo['from']);
+            if (isset($priceFromTo['from'])) {
+                $query = $query->whereRaw($this->table . '.price >= ' . $priceFromTo['from']);
             }
 
-            if ($priceFromTo['to']) {
-                $query = $query->where($this->table . '.price', '<=', $priceFromTo['to']);
+            if (isset($priceFromTo['to'])) {
+                $query = $query->whereRaw($this->table . '.price <= ' . $priceFromTo['to']);
             }
         }
         $query
