@@ -84,4 +84,22 @@ class ProductController extends BaseController {
 
         return $finalArray;
     }
+
+    public function getAllActiveProducts()
+    {
+        $query = Product::query();
+        $query = $query->leftJoin('brand', function($join)
+        {
+            $join->on(Product::getStaticTable() . '.brand_id', '=', 'brand.id');
+        });
+        $query = $query->where('items.active', '=', Product::ACTIVE_PRODUCT);
+
+        $query->select(array(
+            'items.name',
+            'items.url',
+            'items.amazon_name',
+            'brand.name as brand_name'
+        ));
+        return $query->get()->toArray();
+    }
 }

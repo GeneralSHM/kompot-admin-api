@@ -67,3 +67,36 @@ $app->get('/stores', function (\Slim\Http\Request $request, \Slim\Http\Response 
 
     return $response->withJson($responseData);
 });
+
+$app->get('/export', function(\Slim\Http\Request $request, \Slim\Http\Response $response) {
+    /** @var  $productController \Controller\ProductController */
+    $productController = $this->get('ProductController');
+
+    $products = $productController->getAllActiveProducts();
+
+    // disable caching
+    $now = gmdate("D, d M Y H:i:s");
+    header("Expires: Tue, 03 Jul 2001 06:00:00 GMT");
+    header("Cache-Control: max-age=0, no-cache, must-revalidate, proxy-revalidate");
+    header("Last-Modified: {$now} GMT");
+
+    // force download
+    header("Content-Type: application/force-download");
+    header("Content-Type: application/octet-stream");
+    header("Content-Type: application/download");
+
+    $filename = "data_export_" . date("Y-m-d") . ".csv";
+    // disposition / encoding on response body
+    header("Content-Disposition: attachment;filename={$filename}");
+    header("Content-Transfer-Encoding: binary");
+
+    ob_start();
+    $df = fopen("php://output", 'w');
+    fputcsv($df, array_keys(reset($products)));
+    foreach ($products as $row) {
+        fputcsv($df, $row);
+    }
+    fclose($df);
+    echo ob_get_clean();
+    die;
+});
