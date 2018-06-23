@@ -7,6 +7,13 @@ class Brand extends BaseModel
     const ACTIVE_URL = 1;
     const INACTIVE_URL = 0;
 
+    const UPDATED_AT = 'last_edited';
+    const CREATED_AT = 'date_created';
+
+    protected $fillable = [
+        'name'
+    ];
+
     /**
      * Table name for the model.
      *

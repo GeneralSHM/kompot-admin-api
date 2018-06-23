@@ -68,7 +68,16 @@ $app->get('/stores', function (\Slim\Http\Request $request, \Slim\Http\Response 
     return $response->withJson($responseData);
 });
 
-$app->get('/export', function(\Slim\Http\Request $request, \Slim\Http\Response $response) {
+$app->post('/brand', function(\Slim\Http\Request $request, \Slim\Http\Response $response, $args){
+    $model = new \Model\Brand();
+    $model::create([
+        'name' => $request->getParam('name')
+    ]);
+
+    return true;
+});
+
+$app->get('/export', function(\Slim\Http\Request $request, \Slim\Http\Response $response, $args) {
     /** @var  $productController \Controller\ProductController */
     $productController = $this->get('ProductController');
 
