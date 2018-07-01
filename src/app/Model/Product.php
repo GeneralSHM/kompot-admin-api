@@ -50,7 +50,8 @@ class Product extends BaseModel
                 $query->where($this->table . '.name', '=', $searchCriteria)
                     ->orWhereRaw($this->table . '.upc LIKE "' . $searchCriteria . '"')
                     ->orWhereRaw($this->table . '.ean LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"');
+                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"')
+                    ->orWhereRaw($this->table . '.ebay_item_id LIKE "' . $searchCriteria . '"');
             });
         }
 
@@ -117,7 +118,8 @@ class Product extends BaseModel
                 $query->where($this->table . '.name', '=', $searchCriteria)
                     ->orWhereRaw($this->table . '.upc LIKE "' . $searchCriteria . '"')
                     ->orWhereRaw($this->table . '.ean LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"');
+                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"')
+                    ->orWhereRaw($this->table . '.ebay_item_id LIKE "' . $searchCriteria . '"');
             });
         }
 
