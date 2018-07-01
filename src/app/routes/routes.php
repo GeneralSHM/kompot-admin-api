@@ -16,6 +16,7 @@ $app->get('/products', function(\Slim\Http\Request $request, \Slim\Http\Response
     $searchCriteria = $request->getParam('search', '');
     $priceFrom = $request->getParam('priceFrom');
     $priceTo = $request->getParam('priceTo');
+    $ourPrice = $request->getParam('ourPrice', 0);
 
     $priceFromTo = [];
     if ($priceFrom) {
@@ -25,7 +26,7 @@ $app->get('/products', function(\Slim\Http\Request $request, \Slim\Http\Response
         $priceFromTo['to'] = $priceTo;
     }
 
-    $responseData = $productController->getProducts($limit, $offset, $brands, $stores, $searchCriteria, $priceFromTo);
+    $responseData = $productController->getProducts($limit, $offset, $brands, $stores, $searchCriteria, $priceFromTo, $ourPrice);
 
     return $response->withJson($responseData);
 })->add(\Middleware\ListMiddleware::class);

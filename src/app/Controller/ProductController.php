@@ -11,14 +11,15 @@ class ProductController extends BaseController {
         array $brands = [],
         array $stores = [],
         string $searchCriteria = null,
-        array $priceFromTo = []
+        array $priceFromTo = [],
+        $ourPrice = 0
     ) {
         $model = new Product();
 
         /** @var $items \Illuminate\Support\Collection */
-        $items = $model->getItemsBasedOn($limit, $offset, $brands, $stores, $searchCriteria, $priceFromTo);
+        $items = $model->getItemsBasedOn($limit, $offset, $brands, $stores, $searchCriteria, $priceFromTo, $ourPrice);
         $items = $items->toArray();
-        $totalProducts = $model->getItemsBasedOnCount($brands, $stores, $searchCriteria, $priceFromTo)->toArray();
+        $totalProducts = $model->getItemsBasedOnCount($brands, $stores, $searchCriteria, $priceFromTo, $ourPrice)->toArray();
 
         foreach ($items as $key => $item) {
             $upc = $item['productUPC'];

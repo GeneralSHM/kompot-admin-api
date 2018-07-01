@@ -27,7 +27,8 @@ class Product extends BaseModel
         array $brands = [],
         array $stores = [],
         string $searchCriteria = null,
-        array $priceFromTo = []
+        array $priceFromTo = [],
+        $ourPrice = 0
     )
     {
         $query = self::query();
@@ -64,6 +65,11 @@ class Product extends BaseModel
                 $query = $query->whereRaw($this->table . '.price <= ' . $priceFromTo['to']);
             }
         }
+
+        if ($ourPrice != 0) {
+            $query = $query->whereRaw($this->table . '.price != ' . $this->table . '.amazon_price');
+        }
+
         $query
             ->select(array(
                 $this->table . '.id as id',
@@ -95,7 +101,8 @@ class Product extends BaseModel
         array $brands = [],
         array $stores = [],
         string $searchCriteria = null,
-        array $priceFromTo = []
+        array $priceFromTo = [],
+        $ourPrice = 0
     )
     {
         $query = self::query();
@@ -132,6 +139,11 @@ class Product extends BaseModel
                 $query = $query->whereRaw($this->table . '.price <= ' . $priceFromTo['to']);
             }
         }
+
+        if ($ourPrice != 0) {
+            $query = $query->whereRaw($this->table . '.price != ' . $this->table . '.amazon_price');
+        }
+
         $query
             ->select(array(
                 Manager::connection()->raw('COUNT(*) as totalCount')
