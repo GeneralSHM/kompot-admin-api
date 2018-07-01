@@ -98,8 +98,11 @@ class ProductController extends BaseController {
         $query->select(array(
             'items.name',
             'items.url',
-            'items.amazon_name',
-            'brand.name as brand_name'
+            'items.upc',
+            'items.mpn',
+            'items.ean',
+            'items.ebay_item_id as sku',
+            'brand.name as brand'
         ));
         return $query->get()->toArray();
     }
