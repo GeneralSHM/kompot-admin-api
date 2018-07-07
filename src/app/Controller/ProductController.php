@@ -106,4 +106,50 @@ class ProductController extends BaseController {
         ));
         return $query->get()->toArray();
     }
+
+    public function panic()
+    {
+
+        $query = Product::query();
+        $query->update(array(
+            'send_to_amazon' => 0
+        ));
+
+//        $query = Product::query();
+//        $query->select(array(
+//            'items.send_to_amazon',
+//            'items.ebay_item_id as sku',
+//            'items.availability'
+//        ));
+//
+//        $items = $query->get()->toArray();
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => "http://212.237.24.65/mf-AWS-service/src/public/update-quantities",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 30,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "POST",
+            CURLOPT_POSTFIELDS => json_encode([]),
+            CURLOPT_HTTPHEADER => array(
+                "cache-control: no-cache",
+                "content-type: application/json"
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        $err = curl_error($curl);
+
+        curl_close($curl);
+
+        if ($err) {
+            echo "cURL Error #:" . $err;
+        } else {
+            echo $response; die;
+        }
+    }
 }

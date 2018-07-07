@@ -69,6 +69,15 @@ $app->get('/stores', function (\Slim\Http\Request $request, \Slim\Http\Response 
     return $response->withJson($responseData);
 });
 
+$app->get('/panic', function (\Slim\Http\Request $request, \Slim\Http\Response $response, $args){
+    /** @var  $productController \Controller\ProductController */
+    $productController = $this->get('ProductController');
+
+    $responseData = $productController->panic();
+
+    return $response->withJson($responseData);
+});
+
 $app->post('/brand', function(\Slim\Http\Request $request, \Slim\Http\Response $response, $args){
     $model = new \Model\Brand();
     $model::create([
