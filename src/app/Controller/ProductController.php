@@ -27,7 +27,7 @@ class ProductController extends BaseController {
             $mpn = $item['productMPN'];
             $productId = $item['id'];
 
-            $stores = $model->getItemStores($ean, $mpn, $upc, $productId);
+            $stores = [];// $model->getItemStores($ean, $mpn, $upc, $productId);
             if (count($stores) >= 1) {
                 $tmp = $stores[0];
                 $stores[0] = [

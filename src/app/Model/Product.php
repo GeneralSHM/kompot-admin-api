@@ -87,6 +87,7 @@ class Product extends BaseModel
                 $this->table . '.mpn as productMPN',
                 $this->table . '.store as storeName',
                 $this->table . '.ebay_item_id',
+		$this->table . '.did_download_from_api',
                 'brand.name as brandName',
                 'brand.id as brandId'
             ))
