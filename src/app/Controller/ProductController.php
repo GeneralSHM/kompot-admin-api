@@ -94,6 +94,7 @@ class ProductController extends BaseController {
             $join->on(Product::getStaticTable() . '.brand_id', '=', 'brand.id');
         });
         $query = $query->where('items.active', '=', Product::ACTIVE_PRODUCT);
+	$query = $query->where('items.did_download_from_api', '=', 1);
 
         $query->select(array(
             'items.name',
