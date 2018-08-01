@@ -49,10 +49,10 @@ class Product extends BaseModel
         if( ! is_null($searchCriteria) && strlen($searchCriteria) >= 1) {
             $query = $query->where(function ($query) use ($searchCriteria) {
                 $query->where($this->table . '.name', '=', $searchCriteria)
-                    ->orWhereRaw($this->table . '.upc LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.ean LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.ebay_item_id LIKE "' . $searchCriteria . '"');
+                    ->orWhereRaw($this->table . '.upc LIKE "' . mysqli_real_escape_string($searchCriteria) . '"')
+                    ->orWhereRaw($this->table . '.ean LIKE "' . mysqli_real_escape_string($searchCriteria) . '"')
+                    ->orWhereRaw($this->table . '.mpn LIKE "' . mysqli_real_escape_string($searchCriteria) . '"')
+                    ->orWhereRaw($this->table . '.ebay_item_id LIKE "' . mysqli_real_escape_string($searchCriteria) . '"');
             });
         }
 
@@ -124,10 +124,10 @@ class Product extends BaseModel
         if( ! is_null($searchCriteria) && strlen($searchCriteria) >= 1) {
             $query = $query->where(function ($query) use ($searchCriteria) {
                 $query->where($this->table . '.name', '=', $searchCriteria)
-                    ->orWhereRaw($this->table . '.upc LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.ean LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.mpn LIKE "' . $searchCriteria . '"')
-                    ->orWhereRaw($this->table . '.ebay_item_id LIKE "' . $searchCriteria . '"');
+                    ->orWhereRaw($this->table . '.upc LIKE "' . mysqli_real_escape_string($searchCriteria) . '"')
+                    ->orWhereRaw($this->table . '.ean LIKE "' . mysqli_real_escape_string($searchCriteria) . '"')
+                    ->orWhereRaw($this->table . '.mpn LIKE "' . mysqli_real_escape_string($searchCriteria) . '"')
+                    ->orWhereRaw($this->table . '.ebay_item_id LIKE "' . mysqli_real_escape_string($searchCriteria) . '"');
             });
         }
 

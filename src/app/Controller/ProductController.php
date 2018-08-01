@@ -103,8 +103,9 @@ class ProductController extends BaseController {
             'items.mpn',
             'items.ean',
             'items.ebay_item_id as sku',
-            'brand.name as brand'
-        ));
+            'brand.name as brand',
+            'items.price as price'
+	));
         return $query->get()->toArray();
     }
 
